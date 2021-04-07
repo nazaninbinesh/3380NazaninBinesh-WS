@@ -1,4 +1,4 @@
-const User = require("../../3380NazaninBinesh-data/userDb");
+const users = require("../../3380NazaninBinesh-data/userDb");
 
 //Add in bcrypt, jsonwebtoken, source the config file (where are private parts are)
 var jwt = require("jsonwebtoken");
@@ -8,7 +8,11 @@ var config = require("../config");
 exports.registerUser = async function (req, res) {
   var hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
-  User.create(
+  const hello =  users.find({email: req.body.email}).limit(1);
+  console.log(hello);
+   
+
+  users.create(
     {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -21,7 +25,7 @@ exports.registerUser = async function (req, res) {
       email: req.body.email,
       password: hashedPassword,
     },
-    function (err, user) {
+    function (err, user) {     
       if (err)
         return res
           .status(500)
@@ -36,6 +40,7 @@ exports.registerUser = async function (req, res) {
 };
 
 exports.authorize = async function (req, res) {
+ 
   var token = req.headers["x-access-token"];
   //No Token, No Soup!
   if (!token)
@@ -51,7 +56,8 @@ exports.authorize = async function (req, res) {
     //Its Valid, dont send it back but, check there is a valid user
 
     //res.status(200).send(decoded);
-    User.findById(decoded.id, { password: "" }, function (err, user) {
+    users.findById(decoded.id, { password: "" }, function (err, user) {
+      console.log("User",user)
       if (err)
         return res.status(500).send("There was a problem finding the user.");
       if (!user) return res.status(404).send("No user found.");
@@ -62,7 +68,7 @@ exports.authorize = async function (req, res) {
 };
 
 exports.login = async function (req, res) {
-  User.findOne({ email: req.body.email }, function (err, user) {
+  users.findOne({ email: req.body.email }, function (err, user) {
     if (err) return res.status(500).send("Error on the server.");
     if (!user) return res.status(404).send("No user found.");
 

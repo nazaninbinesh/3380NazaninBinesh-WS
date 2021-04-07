@@ -7,7 +7,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 //Authenticate the User
-var controller = require("../controller/auth")
+var controller = require("../controllers/auth")
 
 
 //Register the user

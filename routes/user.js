@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-controller = require("../controller/user")
+controller = require("../controllers/user")
 // CREATES A NEW USER
 router.post('/',controller.registerUser);
 

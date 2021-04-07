@@ -14,7 +14,7 @@ exports.registerUser = async function (req, res) {
       email: req.body.email,
       password: req.body.password,
     },
-    function (err, user) {
+    function (err, user) {     
       if (err)
         return res
           .status(500)
